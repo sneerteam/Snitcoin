@@ -3,6 +3,7 @@ package io.github.felipebueno.snitcoin;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.Wallet;
 import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.uri.BitcoinURI;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.utils.Threading;
 
@@ -136,8 +138,6 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 				Log.d(TAG, "onCoinsReceived newBalance: " + newBalance);
 
 
-
-
 				// Send coins experiment
 				Coin value = tx.getValueSentToMe(kit.wallet());
 				Log.d(TAG, "Forwarding " + value.toFriendlyString() + " BTC");
@@ -205,10 +205,22 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		int id = item.getItemId();
 
 		if (id == R.id.action_share_address) {
-			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+			String uri = requestUri();
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(Intent.EXTRA_TEXT, uri);
+			startActivity(Intent.createChooser(intent, getString(R.string.request_coins_share_dialog_title)));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private String requestUri()
+	{
+		Coin amount = kit.wallet().getBalance().divide(10);
+		String label = "Label Test";
+		String msg = "The message goes here";
+		return BitcoinURI.convertToBitcoinURI(address, amount, label, msg);
 	}
 
 }
