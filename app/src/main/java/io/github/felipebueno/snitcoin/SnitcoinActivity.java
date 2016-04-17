@@ -52,8 +52,9 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	private TextView txtBalanceConverted;
 	private TextView txtAddress;
 	private ClipboardManager clipboardManager;
-	private String address;
+	private Address address;
 	private ImageView qrAddress;
+	private Wallet wallet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 			@Override
 			public boolean onLongClick(View v) {
 				Toast.makeText(SnitcoinActivity.this, "Bitcoin address copied to clipboard", Toast.LENGTH_SHORT).show();
-				clipboardManager.setPrimaryClip(ClipData.newPlainText("Bitcoin address", address));
+				clipboardManager.setPrimaryClip(ClipData.newPlainText("Bitcoin address", address.toString()));
 				return true;
 			}
 		});
@@ -108,7 +109,6 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 					wallet().importKey(new ECKey());
 			}
 		};
-
 		kit.setDownloadListener(new SnitcoinDownloadProgressTracker());
 		kit.setBlockingStartup(false);
 		kit.setUserAgent(APP_NAME, "1.0");
@@ -116,20 +116,20 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		kit.startAsync();
 		kit.awaitRunning();
 
-		Log.d(TAG, "kit.getBalance(): " + kit.wallet().getBalance().toFriendlyString());
-		txtBalanceBTC.setText(kit.wallet().getBalance().toFriendlyString());
+		wallet = kit.wallet();
+		address = wallet.currentReceiveAddress();
 
-		address = kit.wallet().currentReceiveAddress().toString();
+		Log.d(TAG, "kit.getBalance(): " + wallet.getBalance().toFriendlyString());
+		txtBalanceBTC.setText(wallet.getBalance().toFriendlyString());
 
 		final int size = getResources().getDimensionPixelSize(R.dimen.bitmap_dialog_qr_size);
-		qrAddress.setImageBitmap(QrCode.bitmap(address, size));
+		qrAddress.setImageBitmap(QrCode.bitmap(address.toString(), size));
 
 		Log.d(TAG, "kit.currentAddress(): " + address);
 
-		final CharSequence label = WalletUtils.formatHash(address, ADDRESS_FORMAT_GROUP_SIZE, ADDRESS_FORMAT_LINE_SIZE);
-		txtAddress.setText(label);
+		updateAddressView();
 
-		kit.wallet().addEventListener(new AbstractWalletEventListener() {
+		wallet.addEventListener(new AbstractWalletEventListener() {
 			@Override
 			public void onCoinsReceived(Wallet w, Transaction tx, Coin prevBalance, Coin newBalance) {
 				Log.d(TAG, "onCoinsReceived wallet: " + w);
@@ -137,30 +137,10 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 				Log.d(TAG, "onCoinsReceived prevBalance: " + prevBalance);
 				Log.d(TAG, "onCoinsReceived newBalance: " + newBalance);
 
+				address = wallet.freshReceiveAddress();
+				updateAddressView();
 
-				// Send coins experiment
-				Coin value = tx.getValueSentToMe(kit.wallet());
-				Log.d(TAG, "Forwarding " + value.toFriendlyString() + " BTC");
-				// Now send the coins back! Send with a small fee attached to ensure rapid confirmation.
-				final Coin amountToSend = value.subtract(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE);
-				Wallet.SendResult sendResult = null;
-				try {
-					sendResult = kit.wallet().sendCoins(kit.peerGroup(), forwardingAddress, amountToSend);
-				} catch (InsufficientMoneyException e) {
-					Log.e(TAG, e.getMessage().toString());
-				}
-				Log.d(TAG, "Sending ...");
-				// Register a callback that is invoked when the transaction has propagated across the network.
-				// This shows a second style of registering ListenableFuture callbacks, it works when you don't
-				// need access to the object the future returns.
-				final Wallet.SendResult finalSendResult = sendResult;
-				sendResult.broadcastComplete.addListener(new Runnable() {
-					@Override
-					public void run() {
-						// The wallet has changed now, it'll get auto saved shortly or when the app shuts down.
-						Log.d(TAG, "Sent coins onwards! Transaction hash is " + finalSendResult.tx.getHashAsString());
-					}
-				}, Threading.USER_THREAD);
+				forwardReceivedCoinsExperiment(tx);
 			}
 
 			@Override
@@ -176,6 +156,37 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 //				Log.d(TAG, "onWalletChanged wallet: " + wallet);
 			}
 		});
+	}
+
+	private void updateAddressView() {
+		final CharSequence label = WalletUtils.formatHash(address.toString(), ADDRESS_FORMAT_GROUP_SIZE, ADDRESS_FORMAT_LINE_SIZE);
+		txtAddress.setText(label);
+	}
+
+	private void forwardReceivedCoinsExperiment(Transaction tx) {
+		// Send coins experiment
+		Coin value = tx.getValueSentToMe(wallet);
+		Log.d(TAG, "Forwarding " + value.toFriendlyString() + " BTC");
+		// Now send the coins back! Send with a small fee attached to ensure rapid confirmation.
+		final Coin amountToSend = value.subtract(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE);
+		Wallet.SendResult sendResult = null;
+		try {
+			sendResult = wallet.sendCoins(kit.peerGroup(), forwardingAddress, amountToSend);
+		} catch (InsufficientMoneyException e) {
+			Log.e(TAG, e.getMessage().toString());
+		}
+		Log.d(TAG, "Sending ...");
+		// Register a callback that is invoked when the transaction has propagated across the network.
+		// This shows a second style of registering ListenableFuture callbacks, it works when you don't
+		// need access to the object the future returns.
+		final Wallet.SendResult finalSendResult = sendResult;
+		sendResult.broadcastComplete.addListener(new Runnable() {
+			@Override
+			public void run() {
+				// The wallet has changed now, it'll get auto saved shortly or when the app shuts down.
+				Log.d(TAG, "Sent coins onwards! Transaction hash is " + finalSendResult.tx.getHashAsString());
+			}
+		}, Threading.USER_THREAD);
 	}
 
 	@Override
@@ -215,9 +226,8 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		return super.onOptionsItemSelected(item);
 	}
 
-	private String requestUri()
-	{
-		Coin amount = kit.wallet().getBalance().divide(10);
+	private String requestUri() {
+		Coin amount = wallet.getBalance().divide(10);
 		String label = "Label Test";
 		String msg = "The message goes here";
 		return BitcoinURI.convertToBitcoinURI(address, amount, label, msg);
