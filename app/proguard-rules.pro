@@ -1,17 +1,66 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /Users/felipe/Library/Android/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+-verbose
+-dontskipnonpubliclibraryclasses
+-dontoptimize
+-dontpreverify
+-dontobfuscate
 
-# Add any project specific keep options here:
+-keepattributes *Annotation*
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}
+
+-keepclassmembers,includedescriptorclasses public class * extends android.view.View {
+    void set*(***);
+    *** get*();
+}
+
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator CREATOR;
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# android-support
+-dontwarn android.support.**
+-dontnote android.support.**
+-keep class android.support.v7.widget.RoundRectDrawable { *; }
+
+# bitcoinj
+-keep,includedescriptorclasses class org.bitcoinj.wallet.Protos$** { *; }
+-keep,includedescriptorclasses class org.bitcoin.protocols.payments.Protos$** { *; }
+-dontwarn org.bitcoinj.store.WindowsMMapHack
+-dontwarn org.bitcoinj.store.LevelDBBlockStore
+-dontnote org.bitcoinj.crypto.DRMWorkaround
+-dontnote org.bitcoinj.crypto.TrustStoreLoader$DefaultTrustStoreLoader
+-dontnote com.subgraph.orchid.crypto.PRNGFixes
+-dontwarn okio.DeflaterSink
+-dontwarn okio.Okio
+-dontnote com.squareup.okhttp.internal.Platform
+
+# zxing
+-dontwarn com.google.zxing.common.BitMatrix
+
+# Guava
+-dontwarn sun.misc.Unsafe
+-dontnote com.google.common.reflect.**
+-dontnote com.google.common.util.concurrent.MoreExecutors
+-dontnote com.google.common.cache.Striped64,com.google.common.cache.Striped64$Cell
+
+# logback-android
+-dontwarn javax.mail.**
+-dontnote ch.qos.logback.core.rolling.helper.FileStoreUtil
+
+# Bitcoin Wallet
+-dontnote de.schildbach.wallet.util.Io
