@@ -28,9 +28,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -40,8 +37,6 @@ import java.util.Map;
 public class QrCode {
 
 	private static final Writer QR_CODE_WRITER = new QRCodeWriter();
-
-	private static final Logger log = LoggerFactory.getLogger(QrCode.class);
 
 	public static Bitmap bitmap(final String content, final int size) {
 		try {
@@ -65,7 +60,6 @@ public class QrCode {
 			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 			return bitmap;
 		} catch (WriterException x) {
-			log.info("problem creating qr code", x);
 			return null;
 		}
 	}

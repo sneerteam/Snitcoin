@@ -28,19 +28,25 @@ import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.uri.BitcoinURI;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.utils.Threading;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executor;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import io.github.felipebueno.snitcoin.util.QrCode;
-import io.github.felipebueno.snitcoin.util.WalletUtils;
 
 import static io.github.felipebueno.snitcoin.util.Constants.ADDRESS_FORMAT_GROUP_SIZE;
 import static io.github.felipebueno.snitcoin.util.Constants.ADDRESS_FORMAT_LINE_SIZE;
 import static io.github.felipebueno.snitcoin.util.Constants.APP_NAME;
 import static io.github.felipebueno.snitcoin.util.Constants.TAG;
 import static io.github.felipebueno.snitcoin.util.Constants.params;
+import static io.github.felipebueno.snitcoin.util.WalletUtils.formatHash;
 
 public class SnitcoinActivity extends AppCompatActivity implements ClipboardManager.OnPrimaryClipChangedListener {
+
+	private static final Logger log = LoggerFactory.getLogger(SnitcoinActivity.class);
 
 	private static final String to = "mryzM1aqio4pJmKboFMHAG2R13ifucbStR";
 	private static final String WALLET_FILE_PREFIX = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
@@ -63,6 +69,8 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("");
+
+		initLogging();
 
 		clipboardManager = (ClipboardManager) SnitcoinActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -159,8 +167,7 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	}
 
 	private void updateAddressView() {
-		final CharSequence label = WalletUtils.formatHash(address.toString(), ADDRESS_FORMAT_GROUP_SIZE, ADDRESS_FORMAT_LINE_SIZE);
-		txtAddress.setText(label);
+		txtAddress.setText(formatHash(address.toString(), ADDRESS_FORMAT_GROUP_SIZE, ADDRESS_FORMAT_LINE_SIZE));
 	}
 
 	private void forwardReceivedCoinsExperiment(Transaction tx) {
@@ -231,6 +238,13 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		String label = "Label Test";
 		String msg = "The message goes here";
 		return BitcoinURI.convertToBitcoinURI(address, amount, label, msg);
+	}
+
+
+	private static void initLogging() {
+		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+		ch.qos.logback.classic.Logger log = context.getLogger(Logger.ROOT_LOGGER_NAME);
+		log.setLevel(Level.ALL);
 	}
 
 }
