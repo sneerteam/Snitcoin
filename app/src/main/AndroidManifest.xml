@@ -19,7 +19,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -32,6 +31,12 @@
             <meta-data
                 android:name="sneer:session-type"
                 android:value="bitcoin-request"/>
+        </activity>
+        <activity
+            android:name=".BitcoinRequestReceivedActivity"
+            android:excludeFromRecents="true"
+            android:label="Bitcoin Request Received"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
     </application>
 

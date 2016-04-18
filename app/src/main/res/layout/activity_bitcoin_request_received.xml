@@ -7,43 +7,52 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.github.felipebueno.snitcoin.BitcoinRequestActivity">
-
-    <TextView
-        android:id="@+id/txtPlease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Please, send me:"/>
+    tools:context="io.github.felipebueno.snitcoin.BitcoinRequestReceivedActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <EditText
+        <TextView
             android:id="@+id/edtAmount"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="numberDecimal"
-            android:text="42.00"/>
+            android:ems="8"
+            android:text="You have BTC 26.30 (4530.32)"/>
 
         <Spinner
             android:id="@+id/spnCurrencies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@+id/edtAmount"
             android:entries="@array/currencies"/>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/txtAmountInBitcoins"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="(0.074 BTC)"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="This person is asking for BTC 0.074 (USD 10.13)."/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="Do you want to send this amount?"/>
+
+
+    <EditText
+        android:id="@+id/edtYes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:hint="Type yes here"
+        android:minEms="3"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -64,6 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Request"/>
+            android:enabled="false"
+            android:text="Send"/>
     </RelativeLayout>
+
 </LinearLayout>
