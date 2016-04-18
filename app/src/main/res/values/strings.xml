@@ -2,4 +2,10 @@
     <string name="app_name">Snitcoin</string>
     <string name="action_share_address">Share</string>
     <string name="request_coins_share_dialog_title">Share your wallet address</string>
+
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>BRL</item>
+        <item>BTC</item>
+    </string-array>
 </resources>
