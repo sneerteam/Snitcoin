@@ -62,6 +62,12 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	private ImageView qrAddress;
 	private Wallet wallet;
 
+	private static void initLogging() {
+		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+		ch.qos.logback.classic.Logger log = context.getLogger(Logger.ROOT_LOGGER_NAME);
+		log.setLevel(Level.ALL);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -238,13 +244,6 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		String label = "Label Test";
 		String msg = "The message goes here";
 		return BitcoinURI.convertToBitcoinURI(address, amount, label, msg);
-	}
-
-
-	private static void initLogging() {
-		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		ch.qos.logback.classic.Logger log = context.getLogger(Logger.ROOT_LOGGER_NAME);
-		log.setLevel(Level.ALL);
 	}
 
 }

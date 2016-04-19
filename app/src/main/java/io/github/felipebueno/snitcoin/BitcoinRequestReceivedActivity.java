@@ -53,6 +53,8 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 		});
+
+
 	}
 
 }

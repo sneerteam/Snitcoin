@@ -55,11 +55,11 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/btnSend"
+            android:layout_toLeftOf="@+id/btnRequest"
             android:text="Cancel"/>
 
         <Button
-            android:id="@+id/btnSend"
+            android:id="@+id/btnRequest"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
