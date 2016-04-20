@@ -23,8 +23,7 @@
             android:contentDescription="@null"
             android:keepScreenOn="true"
             android:padding="24dp"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_popup_sync"/>
+            android:scaleType="centerInside"/>
 
         <TextView
             android:id="@+id/txtAddress"

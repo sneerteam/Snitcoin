@@ -1,4 +1,4 @@
-package io.github.felipebueno.snitcoin.util;
+package io.github.felipebueno.core.util;
 
 public class WalletUtils {
 

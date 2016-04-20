@@ -18,7 +18,7 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bitcoin_request);
 
-		btnRequest = (Button) findViewById(R.id.btnSend);
+		btnRequest = (Button) findViewById(R.id.btnRequest);
 		btnRequest.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

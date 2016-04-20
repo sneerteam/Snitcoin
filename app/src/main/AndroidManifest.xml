@@ -19,6 +19,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -36,6 +37,12 @@
             android:name=".BitcoinRequestReceivedActivity"
             android:excludeFromRecents="true"
             android:label="Bitcoin Request Received"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+        </activity>
+        <activity
+            android:name=".ExchangeRatesActivity"
+            android:excludeFromRecents="true"
+            android:label="Exchange Rates"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
     </application>
