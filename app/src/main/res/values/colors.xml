@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#00796b</color>
     <color name="colorAccent">#795548</color>
     <color name="fg_less_significant">#ff666666</color>
+
+    <color name="exchangeRateRow">#eee</color>
+
 </resources>

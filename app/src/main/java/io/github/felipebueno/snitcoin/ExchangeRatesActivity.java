@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,21 +25,21 @@ public class ExchangeRatesActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exchange_rates);
 
-		ExchangeRate rate = new ExchangeRate("USD", 436.98, true);
+		final ArrayAdapter adapter = new ExchangeRatesAdapter(this, snitcoin.exchangeRates());
+		final ListView lv = (ListView) findViewById(R.id.lstExchangeRates);
+		lv.setAdapter(adapter);
 
-		ListAdapter adapter = new ExchangeRatesAdapter(this, snitcoin.exchangeRates());
-		ListView theListView = (ListView) findViewById(R.id.lstExchangeRates);
-		theListView.setAdapter(adapter);
-
-		theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(ExchangeRatesActivity.this, "content->" + String.valueOf(parent.getItemAtPosition(position)) + "\nparent->" + parent + "\nview->" + view + "\nposition->" + position + "\nid->" + id, Toast.LENGTH_SHORT).show();
+				ExchangeRate rate = (ExchangeRate) parent.getItemAtPosition(position);
+				snitcoin.setDefault(rate);
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}
 
-	class ExchangeRatesAdapter extends ArrayAdapter<ExchangeRate> {
+	static class ExchangeRatesAdapter extends ArrayAdapter<ExchangeRate> {
 
 		public ExchangeRatesAdapter(Context context, List<ExchangeRate> values) {
 			super(context, R.layout.row_layout_exchange_rates, values);
@@ -54,10 +53,12 @@ public class ExchangeRatesActivity extends AppCompatActivity {
 			ExchangeRate rate = getItem(position);
 			TextView exchangeRateRowCurrencyCode = (TextView) v.findViewById(R.id.exchangeRateRowCurrencyCode);
 			TextView exchangeRateRowRateValue = (TextView) v.findViewById(R.id.exchangeRateRowRateValue);
+			TextView exchangeRateRowBalanceValue = (TextView) v.findViewById(R.id.exchangeRateRowBalanceValue);
 			TextView exchangeRateRowDefault = (TextView) v.findViewById(R.id.exchangeRateRowDefault);
 
 			exchangeRateRowCurrencyCode.setText(rate.code);
-			exchangeRateRowRateValue.setText("" + rate.val);
+			exchangeRateRowRateValue.setText("" + rate.rate);
+			exchangeRateRowBalanceValue.setText("" + rate.balance);
 
 			if (rate.isDefault)
 				exchangeRateRowDefault.setText("(default)");

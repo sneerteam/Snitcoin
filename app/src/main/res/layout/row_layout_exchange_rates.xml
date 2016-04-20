@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@color/exchangeRateRow"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="USD"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
 
@@ -27,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="rate"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
 
@@ -35,10 +35,9 @@
             android:id="@+id/exchangeRateRowRateValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_weight="1"
+            android:gravity="right"
             android:text="436.98"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -56,7 +55,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="(default)"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
 
@@ -66,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="balance"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
 
@@ -74,13 +71,11 @@
             android:id="@+id/exchangeRateRowBalanceValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_weight="1"
+            android:gravity="right"
             android:text="18.35"
-            android:textIsSelectable="true"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
-
 
 </LinearLayout>
