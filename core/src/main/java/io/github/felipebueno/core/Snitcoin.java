@@ -6,13 +6,11 @@ import org.bitcoinj.core.Address;
 
 import java.util.List;
 
-import io.github.felipebueno.core.util.Currency;
-
 public interface Snitcoin {
 
 	Address currentReceiveAddress();
 	double balanceInBTC();
-	double balanceIn(Currency currency);
+	double balanceConverted();
 	Bitmap qrCode(String address, int size);
 	String requestUri();
 

@@ -16,9 +16,9 @@ import android.widget.Toast;
 
 import org.bitcoinj.core.Address;
 
+import io.github.felipebueno.core.ExchangeRate;
 import io.github.felipebueno.core.Snitcoin;
 import io.github.felipebueno.core.sims.SnitcoinSim;
-import io.github.felipebueno.core.util.Currency;
 
 import static io.github.felipebueno.core.util.Constants.*;
 import static io.github.felipebueno.core.util.WalletUtils.formatHash;
@@ -76,7 +76,8 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	}
 
 	private void updateBalanceConvertedView() {
-		txtBalanceConverted.setText("USD " + snitcoin.balanceIn(Currency.USD));
+		ExchangeRate rate = snitcoin.currentDefaultRate();
+		txtBalanceConverted.setText(rate.code + " " + snitcoin.balanceConverted());
 	}
 
 	private void updateAddressView() {
@@ -86,6 +87,7 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	@Override
 	protected void onResume() {
 		super.onResume();
+		updateBalanceConvertedView();
 		clipboardManager.addPrimaryClipChangedListener(this);
 	}
 
