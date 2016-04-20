@@ -21,9 +21,9 @@ import static io.github.felipebueno.core.util.Constants.TO;
 public class SnitcoinSim implements Snitcoin {
 
 	private List<ExchangeRate> exchangeRates = Arrays.asList(
-			new ExchangeRate("USD", 436.98, rounded(436.98 * balanceInBTC(), 2), true),
+			new ExchangeRate("USD", 436.98, rounded(436.98 * balanceInBTC(), 2), false),
 			new ExchangeRate("ABC", 223.32, rounded(223.32 * balanceInBTC(), 2), false),
-			new ExchangeRate("BRL", 1550.36, rounded(1550.36 * balanceInBTC(), 2), false),
+			new ExchangeRate("BRL", 1550.36, rounded(1550.36 * balanceInBTC(), 2), true),
 			new ExchangeRate("YTU", 554.12, rounded(554.12 * balanceInBTC(), 2), false),
 			new ExchangeRate("OIA", 78.65, rounded(78.65 * balanceInBTC(), 2), false),
 			new ExchangeRate("AEW", 123.45, rounded(123.45 * balanceInBTC(), 2), false),
@@ -71,7 +71,6 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public List<ExchangeRate> exchangeRates() {
-		setDefault(exchangeRates.get(1));
 		return exchangeRates;
 	}
 
