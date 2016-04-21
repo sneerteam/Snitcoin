@@ -1,6 +1,7 @@
 package io.github.felipebueno.snitcoin;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,13 +17,22 @@ import java.util.List;
 import io.github.felipebueno.core.ExchangeRate;
 
 import static io.github.felipebueno.snitcoin.SnitcoinActivity.snitcoin;
+import static io.github.felipebueno.snitcoin.Utils.PREF_EXCHANGE_RATES;
+import static io.github.felipebueno.snitcoin.Utils.RATE;
+import static io.github.felipebueno.snitcoin.Utils.setDefaultRateFrom;
 
 public class ExchangeRatesActivity extends AppCompatActivity {
+
+	private static final String TAG = "SNITEST";
+	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exchange_rates);
+
+		prefs = getSharedPreferences(PREF_EXCHANGE_RATES, MODE_PRIVATE);
+		setDefaultRateFrom(prefs, this);
 
 		final ArrayAdapter adapter = new ExchangeRatesAdapter(this, snitcoin.exchangeRates());
 		final ListView lv = (ListView) findViewById(R.id.lstExchangeRates);
@@ -34,6 +44,9 @@ public class ExchangeRatesActivity extends AppCompatActivity {
 				ExchangeRate rate = (ExchangeRate) parent.getItemAtPosition(position);
 				snitcoin.setDefault(rate);
 				adapter.notifyDataSetChanged();
+
+				prefs.edit().putString(RATE, rate.code).apply();
+
 				finish();
 			}
 		});

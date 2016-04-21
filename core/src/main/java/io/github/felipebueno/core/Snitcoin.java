@@ -20,5 +20,7 @@ public interface Snitcoin {
 
 	void setDefault(ExchangeRate rate);
 
+	ExchangeRate rateBy(String code);
+
 }
 

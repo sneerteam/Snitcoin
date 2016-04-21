@@ -21,16 +21,16 @@ import static io.github.felipebueno.core.util.Constants.TO;
 public class SnitcoinSim implements Snitcoin {
 
 	private List<ExchangeRate> exchangeRates = Arrays.asList(
-			new ExchangeRate("USD", 436.98, rounded(436.98 * balanceInBTC(), 2), false),
-			new ExchangeRate("ABC", 223.32, rounded(223.32 * balanceInBTC(), 2), false),
-			new ExchangeRate("BRL", 1550.36, rounded(1550.36 * balanceInBTC(), 2), true),
-			new ExchangeRate("YTU", 554.12, rounded(554.12 * balanceInBTC(), 2), false),
-			new ExchangeRate("OIA", 78.65, rounded(78.65 * balanceInBTC(), 2), false),
-			new ExchangeRate("AEW", 123.45, rounded(123.45 * balanceInBTC(), 2), false),
-			new ExchangeRate("FTW", 998.65, rounded(998.65 * balanceInBTC(), 2), false),
-			new ExchangeRate("SBT", 345.43, rounded(345.43 * balanceInBTC(), 2), false),
-			new ExchangeRate("GNT", 183.12, rounded(183.12 * balanceInBTC(), 2), false),
-			new ExchangeRate("WWE", 10.97, rounded(10.97 * balanceInBTC(), 2), false)
+			new ExchangeRate("USD", 436.98,  rounded(436.98  * balanceInBTC(), 2), true),
+			new ExchangeRate("ABC", 223.32,  rounded(223.32  * balanceInBTC(), 2), false),
+			new ExchangeRate("BRL", 1550.36, rounded(1550.36 * balanceInBTC(), 2), false),
+			new ExchangeRate("FBI", 554.12,  rounded(554.12  * balanceInBTC(), 2), false),
+			new ExchangeRate("NSA", 78.65,   rounded(78.65   * balanceInBTC(), 2), false),
+			new ExchangeRate("ISO", 123.45,  rounded(123.45  * balanceInBTC(), 2), false),
+			new ExchangeRate("FTW", 998.65,  rounded(998.65  * balanceInBTC(), 2), false),
+			new ExchangeRate("SBT", 345.43,  rounded(345.43  * balanceInBTC(), 2), false),
+			new ExchangeRate("CNT", 183.12,  rounded(183.12  * balanceInBTC(), 2), false),
+			new ExchangeRate("WWE", 10.97,   rounded(10.97   * balanceInBTC(), 2), false)
 	);
 
 	public SnitcoinSim() {
@@ -76,16 +76,26 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public ExchangeRate currentDefaultRate() {
+		ExchangeRate ret = null;
 		for (ExchangeRate rate : exchangeRates)
 			if (rate.isDefault)
-				return rate;
-		return null;
+				ret = rate;
+		return ret;
 	}
 
 	@Override
 	public void setDefault(ExchangeRate rate) {
 		currentDefaultRate().isDefault = false;
 		rate.isDefault = true;
+	}
+
+	@Override
+	public ExchangeRate rateBy(String code) {
+		ExchangeRate ret = currentDefaultRate();
+		for (ExchangeRate rate : exchangeRates)
+			if (code.equals(rate.code))
+				ret = rate;
+		return ret;
 	}
 
 }

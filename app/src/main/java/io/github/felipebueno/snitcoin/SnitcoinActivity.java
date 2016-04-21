@@ -2,8 +2,8 @@ package io.github.felipebueno.snitcoin;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +20,11 @@ import io.github.felipebueno.core.ExchangeRate;
 import io.github.felipebueno.core.Snitcoin;
 import io.github.felipebueno.core.sims.SnitcoinSim;
 
-import static io.github.felipebueno.core.util.Constants.*;
+import static io.github.felipebueno.core.util.Constants.ADDRESS_FORMAT_GROUP_SIZE;
+import static io.github.felipebueno.core.util.Constants.ADDRESS_FORMAT_LINE_SIZE;
 import static io.github.felipebueno.core.util.WalletUtils.formatHash;
+import static io.github.felipebueno.snitcoin.Utils.PREF_EXCHANGE_RATES;
+import static io.github.felipebueno.snitcoin.Utils.setDefaultRateFrom;
 
 public class SnitcoinActivity extends AppCompatActivity implements ClipboardManager.OnPrimaryClipChangedListener {
 
@@ -34,6 +37,7 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	private ImageView qrAddress;
 	public static Snitcoin snitcoin;
 	private Address address;
+	private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 
 		snitcoin = new SnitcoinSim();
 
-		clipboardManager = (ClipboardManager) SnitcoinActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+		clipboardManager = (ClipboardManager) SnitcoinActivity.this.getSystemService(CLIPBOARD_SERVICE);
 
 		qrAddress = (ImageView) findViewById(R.id.addressQR);
 
@@ -70,6 +74,9 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 
 		txtBalanceBTC.setText("BTC " + snitcoin.balanceInBTC());
 		qrAddress.setImageBitmap(snitcoin.qrCode(address.toString(), getResources().getDimensionPixelSize(R.dimen.bitmap_dialog_qr_size)));
+
+		prefs = getSharedPreferences(PREF_EXCHANGE_RATES, MODE_PRIVATE);
+		setDefaultRateFrom(prefs, this);
 
 		updateBalanceConvertedView();
 		updateAddressView();
