@@ -21,14 +21,14 @@
             android:ems="8"
             android:text="You have BTC 26.30 (4530.32)"/>
 
-        <Spinner
-            android:id="@+id/spnCurrencies"
+        <Button
+            android:id="@+id/btnCurrencies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@+id/edtAmount"
-            android:entries="@array/currencies"/>
+            android:text="BBB"/>
     </RelativeLayout>
 
     <TextView

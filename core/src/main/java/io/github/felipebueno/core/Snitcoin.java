@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.bitcoinj.core.Address;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface Snitcoin {
@@ -21,6 +22,8 @@ public interface Snitcoin {
 	void setDefault(ExchangeRate rate);
 
 	ExchangeRate rateBy(String code);
+
+	BigDecimal ammountInBTC(double ammount);
 
 }
 

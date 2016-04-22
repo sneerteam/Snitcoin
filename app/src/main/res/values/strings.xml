@@ -6,10 +6,4 @@
     <string name="exchange_rates_default">(default)</string>
     <string name="exchange_rates_rate">rate</string>
     <string name="exchange_rates_balance">balance</string>
-
-    <string-array name="currencies">
-        <item>USD</item>
-        <item>BRL</item>
-        <item>BTC</item>
-    </string-array>
 </resources>

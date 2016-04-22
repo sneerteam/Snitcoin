@@ -17,12 +17,11 @@ import android.widget.Toast;
 import org.bitcoinj.core.Address;
 
 import io.github.felipebueno.core.ExchangeRate;
-import io.github.felipebueno.core.Snitcoin;
-import io.github.felipebueno.core.sims.SnitcoinSim;
 
 import static io.github.felipebueno.core.util.Constants.ADDRESS_FORMAT_GROUP_SIZE;
 import static io.github.felipebueno.core.util.Constants.ADDRESS_FORMAT_LINE_SIZE;
 import static io.github.felipebueno.core.util.WalletUtils.formatHash;
+import static io.github.felipebueno.snitcoin.SnitcoinApp.snitcoin;
 import static io.github.felipebueno.snitcoin.Utils.PREF_EXCHANGE_RATES;
 import static io.github.felipebueno.snitcoin.Utils.setDefaultRateFrom;
 
@@ -35,7 +34,6 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 	private TextView txtAddress;
 	private ClipboardManager clipboardManager;
 	private ImageView qrAddress;
-	public static Snitcoin snitcoin;
 	private Address address;
 	private SharedPreferences prefs;
 
@@ -46,8 +44,6 @@ public class SnitcoinActivity extends AppCompatActivity implements ClipboardMana
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("");
-
-		snitcoin = new SnitcoinSim();
 
 		clipboardManager = (ClipboardManager) SnitcoinActivity.this.getSystemService(CLIPBOARD_SERVICE);
 

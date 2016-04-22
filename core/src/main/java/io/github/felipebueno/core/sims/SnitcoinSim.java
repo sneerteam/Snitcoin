@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Coin;
 import org.bitcoinj.uri.BitcoinURI;
 
 import java.math.BigDecimal;
@@ -21,22 +20,22 @@ import static io.github.felipebueno.core.util.Constants.TO;
 public class SnitcoinSim implements Snitcoin {
 
 	private List<ExchangeRate> exchangeRates = Arrays.asList(
-			new ExchangeRate("USD", 436.98,  rounded(436.98  * balanceInBTC(), 2), true),
-			new ExchangeRate("ABC", 223.32,  rounded(223.32  * balanceInBTC(), 2), false),
-			new ExchangeRate("BRL", 1550.36, rounded(1550.36 * balanceInBTC(), 2), false),
-			new ExchangeRate("FBI", 554.12,  rounded(554.12  * balanceInBTC(), 2), false),
-			new ExchangeRate("NSA", 78.65,   rounded(78.65   * balanceInBTC(), 2), false),
-			new ExchangeRate("ISO", 123.45,  rounded(123.45  * balanceInBTC(), 2), false),
-			new ExchangeRate("FTW", 998.65,  rounded(998.65  * balanceInBTC(), 2), false),
-			new ExchangeRate("SBT", 345.43,  rounded(345.43  * balanceInBTC(), 2), false),
-			new ExchangeRate("CNT", 183.12,  rounded(183.12  * balanceInBTC(), 2), false),
-			new ExchangeRate("WWE", 10.97,   rounded(10.97   * balanceInBTC(), 2), false)
+			new ExchangeRate("USD", 436.98,  round(436.98  * balanceInBTC(), 2), true),
+			new ExchangeRate("ABC", 223.32,  round(223.32  * balanceInBTC(), 2), false),
+			new ExchangeRate("BRL", 1550.36, round(1550.36 * balanceInBTC(), 2), false),
+			new ExchangeRate("FBI", 554.12,  round(554.12  * balanceInBTC(), 2), false),
+			new ExchangeRate("NSA", 78.65,   round(78.65   * balanceInBTC(), 2), false),
+			new ExchangeRate("ISO", 123.45,  round(123.45  * balanceInBTC(), 2), false),
+			new ExchangeRate("FTW", 998.65,  round(998.65  * balanceInBTC(), 2), false),
+			new ExchangeRate("SBT", 345.43,  round(345.43  * balanceInBTC(), 2), false),
+			new ExchangeRate("CNT", 183.12,  round(183.12  * balanceInBTC(), 2), false),
+			new ExchangeRate("WWE", 10.97,   round(10.97   * balanceInBTC(), 2), false)
 	);
 
 	public SnitcoinSim() {
 	}
 
-	private static double rounded(double btc, int scale) {
+	private static double round(double btc, int scale) {
 		return new BigDecimal(btc).setScale(scale, BigDecimal.ROUND_CEILING).doubleValue();
 	}
 
@@ -51,12 +50,12 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public double balanceInBTC() {
-		return 0.042;
+		return 0.042654;
 	}
 
 	@Override
 	public double balanceConverted() {
-		return rounded(balanceInBTC() * currentDefaultRate().rate, 2);
+		return round(balanceInBTC() * currentDefaultRate().rate, 2);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public String requestUri() {
-		return BitcoinURI.convertToBitcoinURI(currentReceiveAddress(), Coin.valueOf(4200000), "", "");
+		return BitcoinURI.convertToBitcoinURI(currentReceiveAddress(), null, null, null);
 	}
 
 	@Override
@@ -96,6 +95,11 @@ public class SnitcoinSim implements Snitcoin {
 			if (code.equals(rate.code))
 				ret = rate;
 		return ret;
+	}
+
+	@Override
+	public BigDecimal ammountInBTC(double ammount) {
+		return BigDecimal.valueOf(ammount).divide(BigDecimal.valueOf(currentDefaultRate().rate), 6, BigDecimal.ROUND_CEILING);
 	}
 
 }

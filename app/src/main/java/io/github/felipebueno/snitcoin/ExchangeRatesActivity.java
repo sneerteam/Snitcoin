@@ -16,7 +16,7 @@ import java.util.List;
 
 import io.github.felipebueno.core.ExchangeRate;
 
-import static io.github.felipebueno.snitcoin.SnitcoinActivity.snitcoin;
+import static io.github.felipebueno.snitcoin.SnitcoinApp.snitcoin;
 import static io.github.felipebueno.snitcoin.Utils.PREF_EXCHANGE_RATES;
 import static io.github.felipebueno.snitcoin.Utils.RATE;
 import static io.github.felipebueno.snitcoin.Utils.setDefaultRateFrom;
