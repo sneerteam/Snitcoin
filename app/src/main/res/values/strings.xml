@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Snitcoin</string>
-    <string name="action_share_address">Share</string>
+    <string name="action_share_address">Request</string>
     <string name="action_exchange_rates">Exchange Rates</string>
     <string name="request_coins_share_dialog_title">Share your wallet address</string>
     <string name="exchange_rates_default">(default)</string>
     <string name="exchange_rates_rate">rate</string>
     <string name="exchange_rates_balance">balance</string>
+    <string name="action_setings">Settings</string>
 </resources>

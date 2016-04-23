@@ -4,14 +4,21 @@
       tools:context="io.github.felipebueno.snitcoin.SnitcoinActivity">
     <item
         android:id="@+id/action_exchange_rates"
-        android:icon="@android:drawable/ic_popup_sync"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
         android:title="@string/action_exchange_rates"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="101"
+        android:visible="false"
+        android:title="@string/action_setings"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_share_address"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="101"
         android:title="@string/action_share_address"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 </menu>
