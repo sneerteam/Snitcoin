@@ -23,8 +23,8 @@ public interface Snitcoin {
 
 	ExchangeRate rateBy(String code);
 
-	BigDecimal ammountInBTC(double ammount);
+	BigDecimal amountInBTC(double amount);
 
-	BigDecimal ammountConverted(BigDecimal ammount);
+	double amountConverted(BigDecimal btc);
 }
 

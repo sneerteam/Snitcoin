@@ -91,7 +91,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 		BigDecimal btc = BigDecimal.valueOf(0.074);
 		btnCurrencies.setText(currency);
 		txtAmount.setText("You have BTC "+ snitcoin.balanceInBTC() + " (" + snitcoin.balanceConverted() + " " + currency + ")");
-		txtThisPerson.setText("This person is asking for " + btc + " BTC (" + snitcoin.ammountConverted(btc) + " " + currency + "). Do you want to send this amount?)");
+		txtThisPerson.setText("This person is asking for " + btc + " BTC (" + snitcoin.amountConverted(btc) + " " + currency + "). Do you want to send this amount?)");
 	}
 
 }

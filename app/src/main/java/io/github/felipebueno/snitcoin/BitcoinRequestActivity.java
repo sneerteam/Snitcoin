@@ -95,7 +95,7 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		if (TextUtils.isEmpty(ammountStr)) return;
 
 		Double ammountToConvert = Double.valueOf(ammountStr);
-		BigDecimal ammountInBTC = SnitcoinApp.snitcoin.ammountInBTC(ammountToConvert);
+		BigDecimal ammountInBTC = SnitcoinApp.snitcoin.amountInBTC(ammountToConvert);
 
 		txtAmountInBitcoins.setText("(" + ammountInBTC + " BTC)");
 	}
