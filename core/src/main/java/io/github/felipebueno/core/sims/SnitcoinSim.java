@@ -20,23 +20,23 @@ import static io.github.felipebueno.core.util.Constants.TO;
 public class SnitcoinSim implements Snitcoin {
 
 	private List<ExchangeRate> exchangeRates = Arrays.asList(
-			new ExchangeRate("USD", 436.98,  round(436.98  * balanceInBTC(), 2), true),
-			new ExchangeRate("ABC", 223.32,  round(223.32  * balanceInBTC(), 2), false),
-			new ExchangeRate("BRL", 1550.36, round(1550.36 * balanceInBTC(), 2), false),
-			new ExchangeRate("FBI", 554.12,  round(554.12  * balanceInBTC(), 2), false),
-			new ExchangeRate("NSA", 78.65,   round(78.65   * balanceInBTC(), 2), false),
-			new ExchangeRate("ISO", 123.45,  round(123.45  * balanceInBTC(), 2), false),
-			new ExchangeRate("FTW", 998.65,  round(998.65  * balanceInBTC(), 2), false),
-			new ExchangeRate("SBT", 345.43,  round(345.43  * balanceInBTC(), 2), false),
-			new ExchangeRate("CNT", 183.12,  round(183.12  * balanceInBTC(), 2), false),
-			new ExchangeRate("WWE", 10.97,   round(10.97   * balanceInBTC(), 2), false)
+			new ExchangeRate("USD", 436.98,  round(BigDecimal.valueOf(436.98).multiply(balanceInBTC()), 2), true),
+			new ExchangeRate("ABC", 223.32,  round(BigDecimal.valueOf(223.32).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("BRL", 1550.36, round(BigDecimal.valueOf(1550.36).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("FBI", 554.12,  round(BigDecimal.valueOf(554.12).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("NSA", 78.65,   round(BigDecimal.valueOf(78.65).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("ISO", 123.45,  round(BigDecimal.valueOf(123.45).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("FTW", 998.65,  round(BigDecimal.valueOf(998.65).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("SBT", 345.43,  round(BigDecimal.valueOf(345.43).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("CNT", 183.12,  round(BigDecimal.valueOf(183.12).multiply(balanceInBTC()), 2), false),
+			new ExchangeRate("WWE", 10.97,   round(BigDecimal.valueOf(10.97).multiply(balanceInBTC()), 2), false)
 	);
 
 	public SnitcoinSim() {
 	}
 
-	private static double round(double btc, int scale) {
-		return new BigDecimal(btc).setScale(scale, BigDecimal.ROUND_CEILING).doubleValue();
+	private static BigDecimal round(BigDecimal btc, int scale) {
+		return btc.setScale(scale, BigDecimal.ROUND_CEILING);
 	}
 
 	@Override
@@ -49,13 +49,13 @@ public class SnitcoinSim implements Snitcoin {
 	}
 
 	@Override
-	public double balanceInBTC() {
-		return 0.042654;
+	public BigDecimal balanceInBTC() {
+		return BigDecimal.valueOf(0.042654);
 	}
 
 	@Override
 	public double balanceConverted() {
-		return round(balanceInBTC() * currentDefaultRate().rate, 2);
+		return round(balanceInBTC().multiply(BigDecimal.valueOf(currentDefaultRate().rate)), 2).doubleValue();
 	}
 
 	@Override
@@ -100,6 +100,11 @@ public class SnitcoinSim implements Snitcoin {
 	@Override
 	public BigDecimal ammountInBTC(double ammount) {
 		return BigDecimal.valueOf(ammount).divide(BigDecimal.valueOf(currentDefaultRate().rate), 6, BigDecimal.ROUND_CEILING);
+	}
+
+	@Override
+	public BigDecimal ammountConverted(BigDecimal btc) {
+		return round(btc.multiply(BigDecimal.valueOf(currentDefaultRate().rate)), 2);
 	}
 
 }

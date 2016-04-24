@@ -14,17 +14,19 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/edtAmount"
+            android:id="@+id/txtAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:ems="8"
-            android:text="You have BTC 26.30 (4530.32)"/>
+            android:text="You have BTC 26.30 (4530.32 USD)"/>
 
         <Button
             android:id="@+id/btnCurrencies"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/edtAmount"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@+id/edtAmount"
@@ -32,19 +34,12 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtThisPerson"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="This person is asking for BTC 0.074 (USD 10.13)."/>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="Do you want to send this amount?"/>
-
+        android:text="This person is asking for BTC 0.074 (USD 10.13). Do you want to send this amount?"/>
 
     <EditText
         android:id="@+id/edtYes"

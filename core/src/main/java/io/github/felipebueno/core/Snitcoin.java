@@ -10,7 +10,7 @@ import java.util.List;
 public interface Snitcoin {
 
 	Address currentReceiveAddress();
-	double balanceInBTC();
+	BigDecimal balanceInBTC();
 	double balanceConverted();
 	Bitmap qrCode(String address, int size);
 	String requestUri();
@@ -25,5 +25,6 @@ public interface Snitcoin {
 
 	BigDecimal ammountInBTC(double ammount);
 
+	BigDecimal ammountConverted(BigDecimal ammount);
 }
 

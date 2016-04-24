@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 
-import sneer.android.Message;
 import sneer.android.PartnerSession;
 
 import static io.github.felipebueno.snitcoin.Utils.PREF_EXCHANGE_RATES;
@@ -28,6 +27,7 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 	private Button btnCurrencies;
 	private TextView txtAmountInBitcoins;
 	private EditText edtAmount;
+	private Button btnCancel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,6 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_bitcoin_request);
 
 		btnCurrencies = (Button) findViewById(R.id.btnCurrencies);
-
 		btnCurrencies.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -43,10 +42,19 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 			}
 		});
 
+		btnCancel = (Button) findViewById(R.id.btnCancel);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+
 		btnRequest = (Button) findViewById(R.id.btnRequest);
 		btnRequest.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				finish();
 			}
 		});
 
@@ -69,8 +77,6 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		txtAmountInBitcoins = (TextView) findViewById(R.id.txtAmountInBitcoins);
 
 		updateCurrencyAndAmmountInBTC();
-
-//		startSession();
 	}
 
 	@Override
@@ -83,7 +89,7 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		prefs = getSharedPreferences(PREF_EXCHANGE_RATES, MODE_PRIVATE);
 		btnCurrencies.setText(prefs.getString(RATE, "USD"));
 
-		txtAmountInBitcoins.setText("(0.000000)");
+		txtAmountInBitcoins.setText("(0.000000 BTC)");
 
 		String ammountStr = edtAmount.getText().toString();
 		if (TextUtils.isEmpty(ammountStr)) return;
@@ -91,21 +97,7 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 		Double ammountToConvert = Double.valueOf(ammountStr);
 		BigDecimal ammountInBTC = SnitcoinApp.snitcoin.ammountInBTC(ammountToConvert);
 
-		txtAmountInBitcoins.setText("(" + ammountInBTC + ")");
-	}
-
-	private void startSession() {
-		session = PartnerSession.join(this, new PartnerSession.Listener() {
-			@Override
-			public void onMessage(Message message) {
-				//Called for every message sent by you and by your partner.
-			}
-
-			@Override
-			public void onUpToDate() {
-				//Called when there are no more messages pending in the session.
-			}
-		});
+		txtAmountInBitcoins.setText("(" + ammountInBTC + " BTC)");
 	}
 
 }
