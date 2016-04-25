@@ -7,6 +7,7 @@ import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.uri.BitcoinURI;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,26 +15,30 @@ import sneer.bitcoin.core.ExchangeRate;
 import sneer.bitcoin.core.Snitcoin;
 import sneer.bitcoin.core.util.QrCode;
 
+import static java.math.BigDecimal.ROUND_HALF_UP;
 import static sneer.bitcoin.core.util.Constants.PARAMS;
 import static sneer.bitcoin.core.util.Constants.TO;
-import static java.math.BigDecimal.ROUND_HALF_UP;
 
 public class SnitcoinSim implements Snitcoin {
 
 	public List<ExchangeRate> exchangeRates = Arrays.asList(
-			new ExchangeRate("USD", 436.98,  round(BigDecimal.valueOf(436.98).multiply(balanceInBTC()), 2), true),
-			new ExchangeRate("ABC", 223.32,  round(BigDecimal.valueOf(223.32).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("BRL", 1550.36, round(BigDecimal.valueOf(1550.36).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("FBI", 554.12,  round(BigDecimal.valueOf(554.12).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("NSA", 78.65,   round(BigDecimal.valueOf(78.65).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("ISO", 123.45,  round(BigDecimal.valueOf(123.45).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("FTW", 998.65,  round(BigDecimal.valueOf(998.65).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("SBT", 345.43,  round(BigDecimal.valueOf(345.43).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("CNT", 183.12,  round(BigDecimal.valueOf(183.12).multiply(balanceInBTC()), 2), false),
-			new ExchangeRate("WWE", 10.97,   round(BigDecimal.valueOf(10.97).multiply(balanceInBTC()), 2), false)
+			new ExchangeRate("USD", 436.98, true),
+			new ExchangeRate("ABC", 223.32, false),
+			new ExchangeRate("BRL", 1550.36, false),
+			new ExchangeRate("FBI", 554.12, false),
+			new ExchangeRate("NSA", 78.65, false),
+			new ExchangeRate("ISO", 123.45, false),
+			new ExchangeRate("FTW", 998.65, false),
+			new ExchangeRate("SBT", 345.43, false),
+			new ExchangeRate("CNT", 183.12, false),
+			new ExchangeRate("WWE", 10.97, false),
+			new ExchangeRate("BLA", 43.93, false)
 	);
 
+	public List<String> currencyCodes = new ArrayList<>();
+
 	public SnitcoinSim() {
+
 	}
 
 	public static BigDecimal round(BigDecimal btc, int scale) {
@@ -73,6 +78,15 @@ public class SnitcoinSim implements Snitcoin {
 	public List<ExchangeRate> exchangeRates() {
 		return exchangeRates;
 	}
+
+	@Override
+	public List<String> currencyCodes() {
+		currencyCodes.clear();
+		for (ExchangeRate rate:exchangeRates)
+			currencyCodes.add(rate.code);
+		return currencyCodes;
+	}
+
 
 	@Override
 	public ExchangeRate currentDefaultRate() {

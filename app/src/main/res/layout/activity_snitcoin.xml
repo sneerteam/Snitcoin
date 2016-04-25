@@ -47,21 +47,37 @@
                     android:gravity="bottom"
                     android:paddingLeft="24dp"
                     android:paddingStart="24dp"
-                    android:text="0.003 BTC"
+                    android:text="0.04254823 BTC"
                     android:textColor="@android:color/white"
                     android:textSize="32dp"/>
 
-                <TextView
-                    android:id="@+id/txtBalanceConverted"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="top"
-                    android:paddingLeft="24dp"
-                    android:paddingStart="24dp"
-                    android:text="$13.94"
-                    android:textColor="@android:color/white"
-                    android:textSize="16dp"/>
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txtBalanceConverted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="24dp"
+                        android:paddingStart="24dp"
+                        android:text="32.43"
+                        android:textColor="@android:color/white"
+                        android:textSize="16dp"/>
+
+                    <Spinner
+                        android:id="@+id/spnBalanceConverted"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/txtBalanceConverted"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="32dp"
+                        android:layout_toRightOf="@id/txtBalanceConverted"
+                        android:entries="@array/currencies"
+                        android:textColor="@android:color/white"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar

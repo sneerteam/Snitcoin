@@ -17,6 +17,8 @@ public interface Snitcoin {
 
 	List<ExchangeRate> exchangeRates();
 
+	List<String> currencyCodes();
+
 	ExchangeRate currentDefaultRate();
 
 	void setDefault(ExchangeRate rate);

@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import sneer.bitcoin.core.ExchangeRate;
 
@@ -82,4 +83,8 @@ public class SnitcoinSimTest {
 		assertEquals(snitcoin.amountConverted(BigDecimal.valueOf(1)), usd.rate, DELTA);
 	}
 
+	@Test
+	public void testCurrencyCodes() throws Exception {
+
+	}
 }

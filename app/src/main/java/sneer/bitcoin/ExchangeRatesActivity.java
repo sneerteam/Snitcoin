@@ -71,7 +71,7 @@ public class ExchangeRatesActivity extends AppCompatActivity {
 
 			exchangeRateRowCurrencyCode.setText(rate.code);
 			exchangeRateRowRateValue.setText("" + rate.rate);
-			exchangeRateRowBalanceValue.setText("" + rate.balance);
+//			exchangeRateRowBalanceValue.setText("" + rate.balance);
 
 			if (rate.isDefault)
 				exchangeRateRowDefault.setText("(default)");
