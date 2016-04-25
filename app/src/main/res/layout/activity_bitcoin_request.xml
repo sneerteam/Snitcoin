@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.github.felipebueno.snitcoin.BitcoinRequestActivity">
+    tools:context="sneer.bitcoin.BitcoinRequestActivity">
 
     <TextView
         android:id="@+id/txtPlease"
