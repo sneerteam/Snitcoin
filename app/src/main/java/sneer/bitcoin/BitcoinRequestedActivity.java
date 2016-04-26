@@ -23,7 +23,7 @@ import static sneer.bitcoin.SnitcoinApp.snitcoin;
 import static sneer.bitcoin.Utils.PREF_EXCHANGE_RATES;
 import static sneer.bitcoin.Utils.RATE;
 
-public class BitcoinRequestReceivedActivity extends AppCompatActivity {
+public class BitcoinRequestedActivity extends AppCompatActivity {
 
 	private EditText edtYes;
 	private Button btnSend;
@@ -41,7 +41,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_bitcoin_request_received);
+		setContentView(R.layout.activity_bitcoin_requested);
 
 		txtBalanceBTC = (TextView) findViewById(R.id.txtBalanceBTC);
 		txtBalanceConverted = (TextView) findViewById(R.id.txtBalanceConverted);
@@ -75,7 +75,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 		btnCancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(BitcoinRequestReceivedActivity.this, "Transaction canceled", Toast.LENGTH_SHORT).show();
+				Toast.makeText(BitcoinRequestedActivity.this, "Transaction canceled", Toast.LENGTH_SHORT).show();
 				finish();
 			}
 		});
@@ -84,7 +84,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 		btnSend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(BitcoinRequestReceivedActivity.this, "Bitcoin sent", Toast.LENGTH_SHORT).show();
+				Toast.makeText(BitcoinRequestedActivity.this, "Bitcoin sent", Toast.LENGTH_SHORT).show();
 				finish();
 			}
 		});
@@ -93,7 +93,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 		btnOpenWallet.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(BitcoinRequestReceivedActivity.this, SnitcoinActivity.class));
+				startActivity(new Intent(BitcoinRequestedActivity.this, SnitcoinActivity.class));
 				finish();
 			}
 		});
