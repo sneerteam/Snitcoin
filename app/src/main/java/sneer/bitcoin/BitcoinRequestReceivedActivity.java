@@ -7,45 +7,72 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
 
-import static sneer.bitcoin.SnitcoinApp.*;
+import sneer.bitcoin.core.ExchangeRate;
+
+import static android.view.View.*;
+import static sneer.bitcoin.SnitcoinApp.snitcoin;
 import static sneer.bitcoin.Utils.PREF_EXCHANGE_RATES;
 import static sneer.bitcoin.Utils.RATE;
 
 public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 
-	private EditText txtYes;
+	private EditText edtYes;
 	private Button btnSend;
 	private Button btnCancel;
-	private Button btnCurrencies;
+	private Spinner spnCurrencies;
 	private SharedPreferences prefs;
-	private TextView txtAmount;
-	private TextView txtThisPerson;
+	private TextView txtBalanceBTC;
+	private TextView txtBalanceConverted;
+	private TextView txtAmountAskedInBTC;
+	private TextView txtAmountAskedConverted;
+	private TextView txtDoYou;
+	private TextView txtNotEnough;
+	private Button btnOpenWallet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bitcoin_request_received);
 
-		txtAmount = (TextView) findViewById(R.id.txtAmount);
-		txtThisPerson = (TextView) findViewById(R.id.txtThisPerson);
+		txtBalanceBTC = (TextView) findViewById(R.id.txtBalanceBTC);
+		txtBalanceConverted = (TextView) findViewById(R.id.txtBalanceConverted);
+		txtAmountAskedInBTC = (TextView) findViewById(R.id.txtAmountAskedInBTC);
+		txtAmountAskedConverted = (TextView) findViewById(R.id.txtAmountAskedConverted);
+		txtDoYou = (TextView) findViewById(R.id.txtDoYou);
+		txtNotEnough = (TextView) findViewById(R.id.txtNotEnough);
 
-		btnCurrencies = (Button) findViewById(R.id.btnCurrencies);
-		btnCurrencies.setOnClickListener(new View.OnClickListener() {
+
+		final CurrenciesAdapter adapter = new CurrenciesAdapter(this, R.layout.currency_spinner_item_dark, snitcoin.currencyCodes());
+		spnCurrencies = (Spinner) findViewById(R.id.spnCurrencies);
+		spnCurrencies.setAdapter(adapter);
+		spnCurrencies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
-			public void onClick(View v) {
-				startActivity(new Intent().setClass(BitcoinRequestReceivedActivity.this, ExchangeRatesActivity.class));
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String code = (String) parent.getItemAtPosition(position);
+				ExchangeRate rate = snitcoin.rateBy(code);
+				snitcoin.setDefault(rate);
+				adapter.notifyDataSetChanged();
+				prefs.edit().putString(RATE, rate.code).apply();
+				updateCurrencyAndAmmountInBTC();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
 			}
 		});
 
 		btnCancel = (Button) findViewById(R.id.btnCancel);
-		btnCancel.setOnClickListener(new View.OnClickListener() {
+		btnCancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(BitcoinRequestReceivedActivity.this, "Transaction canceled", Toast.LENGTH_SHORT).show();
@@ -54,7 +81,7 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 		});
 
 		btnSend = (Button) findViewById(R.id.btnSend);
-		btnSend.setOnClickListener(new View.OnClickListener() {
+		btnSend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(BitcoinRequestReceivedActivity.this, "Bitcoin sent", Toast.LENGTH_SHORT).show();
@@ -62,8 +89,17 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 			}
 		});
 
-		txtYes = (EditText) findViewById(R.id.edtYes);
-		txtYes.addTextChangedListener(new TextWatcher() {
+		btnOpenWallet = (Button) findViewById(R.id.btnOpenWallet);
+		btnOpenWallet.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(BitcoinRequestReceivedActivity.this, SnitcoinActivity.class));
+				finish();
+			}
+		});
+
+		edtYes = (EditText) findViewById(R.id.edtYes);
+		edtYes.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
 				btnSend.setEnabled(s.toString().toLowerCase().equals("yes"));
@@ -88,10 +124,28 @@ public class BitcoinRequestReceivedActivity extends AppCompatActivity {
 	private void updateCurrencyAndAmmountInBTC() {
 		prefs = getSharedPreferences(PREF_EXCHANGE_RATES, MODE_PRIVATE);
 		String currency = prefs.getString(RATE, "USD");
-		BigDecimal btc = BigDecimal.valueOf(0.074);
-		btnCurrencies.setText(currency);
-		txtAmount.setText("You have BTC "+ snitcoin.balanceInBTC() + " (" + snitcoin.balanceConverted() + " " + currency + ")");
-		txtThisPerson.setText("This person is asking for " + btc + " BTC (" + snitcoin.amountConverted(btc) + " " + currency + "). Do you want to send this amount?)");
+		BigDecimal asked = BigDecimal.valueOf(1.0265478);
+		BigDecimal balance = snitcoin.balanceInBTC();
+		txtBalanceBTC.setText(balance + " BTC");
+		txtBalanceConverted.setText("" + snitcoin.balanceConverted());
+		txtAmountAskedInBTC.setText(asked + " BTC");
+		txtAmountAskedConverted.setText("(" + snitcoin.amountConverted(asked) + " " + currency + ")");
+
+		txtDoYou.setVisibility(VISIBLE);
+		edtYes.setVisibility(VISIBLE);
+		btnSend.setVisibility(VISIBLE);
+		btnOpenWallet.setVisibility(GONE);
+		txtNotEnough.setVisibility(GONE);
+
+		if (balance.compareTo(asked) == -1) {
+			txtDoYou.setVisibility(GONE);
+			edtYes.setVisibility(GONE);
+			btnSend.setVisibility(GONE);
+			btnOpenWallet.setVisibility(VISIBLE);
+			txtNotEnough.setVisibility(VISIBLE);
+		}
+
+
 	}
 
 }

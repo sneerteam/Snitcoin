@@ -1,6 +1,5 @@
 package sneer.bitcoin;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +7,18 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
 
 import sneer.android.PartnerSession;
+import sneer.bitcoin.core.ExchangeRate;
 
+import static sneer.bitcoin.SnitcoinApp.snitcoin;
 import static sneer.bitcoin.Utils.PREF_EXCHANGE_RATES;
 import static sneer.bitcoin.Utils.RATE;
 
@@ -24,23 +27,15 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 	private PartnerSession session;
 	private Button btnRequest;
 	private SharedPreferences prefs;
-	private Button btnCurrencies;
 	private TextView txtAmountInBitcoins;
 	private EditText edtAmount;
 	private Button btnCancel;
+	private Spinner spnCurrencies;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bitcoin_request);
-
-		btnCurrencies = (Button) findViewById(R.id.btnCurrencies);
-		btnCurrencies.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent().setClass(BitcoinRequestActivity.this, ExchangeRatesActivity.class));
-			}
-		});
 
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -76,18 +71,30 @@ public class BitcoinRequestActivity extends AppCompatActivity {
 
 		txtAmountInBitcoins = (TextView) findViewById(R.id.txtAmountInBitcoins);
 
-		updateCurrencyAndAmmountInBTC();
-	}
+		final CurrenciesAdapter adapter = new CurrenciesAdapter(this, R.layout.currency_spinner_item_dark, snitcoin.currencyCodes());
+		spnCurrencies = (Spinner) findViewById(R.id.spnCurrencies);
+		spnCurrencies.setAdapter(adapter);
+		spnCurrencies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String code = (String) parent.getItemAtPosition(position);
+				ExchangeRate rate = snitcoin.rateBy(code);
+				snitcoin.setDefault(rate);
+				adapter.notifyDataSetChanged();
+				prefs.edit().putString(RATE, rate.code).apply();
+				updateCurrencyAndAmmountInBTC();
+			}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});;
+
 		updateCurrencyAndAmmountInBTC();
 	}
 
 	private void updateCurrencyAndAmmountInBTC() {
 		prefs = getSharedPreferences(PREF_EXCHANGE_RATES, MODE_PRIVATE);
-		btnCurrencies.setText(prefs.getString(RATE, "USD"));
 
 		txtAmountInBitcoins.setText("(0.000000 BTC)");
 

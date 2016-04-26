@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -36,7 +35,7 @@ public class SnitcoinActivity extends AppCompatActivity {
 	private Address address;
 	private SharedPreferences prefs;
 	private ImageButton btnShareAddress;
-	private Spinner spnBalanceConverted;
+	private Spinner spinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +64,10 @@ public class SnitcoinActivity extends AppCompatActivity {
 			}
 		});
 
-		final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.currency_spinner_item, snitcoin.currencyCodes());
-		spnBalanceConverted = (Spinner) findViewById(R.id.spnBalanceConverted);
-		spnBalanceConverted.setAdapter(adapter);
-		spnBalanceConverted.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		final CurrenciesAdapter adapter = new CurrenciesAdapter(this, R.layout.currency_spinner_item, snitcoin.currencyCodes());
+		spinner = (Spinner) findViewById(R.id.spnBalanceConverted);
+		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String code = (String) parent.getItemAtPosition(position);

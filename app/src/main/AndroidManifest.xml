@@ -37,7 +37,7 @@
         <activity
             android:name=".BitcoinRequestReceivedActivity"
             android:excludeFromRecents="true"
-            android:label="Bitcoin Request Received"
+            android:label="Bitcoin Requested"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
         <activity

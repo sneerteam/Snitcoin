@@ -56,7 +56,7 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public BigDecimal balanceInBTC() {
-		return BigDecimal.valueOf(0.042654);
+		return BigDecimal.valueOf(0.04265478);
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class SnitcoinSim implements Snitcoin {
 
 	@Override
 	public BigDecimal amountInBTC(double amount) {
-		return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(currentDefaultRate().rate), 6, ROUND_HALF_UP);
+		return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(currentDefaultRate().rate), 8, ROUND_HALF_UP);
 	}
 
 	@Override
