@@ -1,11 +1,11 @@
 package sneer.bitcoin;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import sneer.bitcoin.core.Snitcoin;
 import sneer.bitcoin.core.sims.SnitcoinSim;
 
-public class SnitcoinApp extends Application {
+public class SnitcoinApp extends MultiDexApplication {
 
 	public static Snitcoin snitcoin;
 
